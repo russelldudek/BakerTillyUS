@@ -51,7 +51,7 @@ jobs:
           SERVER_PID=$!
           trap 'kill $SERVER_PID' EXIT
           sleep 2
-          cat >/tmp/mobile-qa.mjs <<'EOF'
+          cat >mobile-qa.mjs <<'EOF'
           import { chromium } from 'playwright';
           import { writeFile } from 'node:fs/promises';
           const browser = await chromium.launch({ headless: true });
@@ -81,7 +81,8 @@ jobs:
           await browser.close();
           await writeFile('qa/mobile-correction/results.json', JSON.stringify(results, null, 2));
           EOF
-          node /tmp/mobile-qa.mjs
+          node ./mobile-qa.mjs
+          rm -f mobile-qa.mjs
       - name: Verify candidate-positioning regression rules
         run: |
           if grep -RniE 'prior Baker Tilly experience|not a claim|Interview thesis|Interview Brief|Listen at the work' --include='*.html' --include='*.md' .; then
@@ -107,6 +108,7 @@ jobs:
           EOF
       - name: Commit generated PDFs and QA evidence
         run: |
+          rm -f mobile-qa.mjs
           rm -rf node_modules package.json package-lock.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
