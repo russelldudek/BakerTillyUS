@@ -1,1 +1,1 @@
-Canonical main passed the corrected document verification. This branch remains unmerged.
+Corrected document verification passed on canonical main. This trigger branch is not part of the release.
