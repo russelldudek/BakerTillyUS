@@ -2,6 +2,8 @@ name: Generate candidate PDFs and verify mobile documents
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
     paths:
@@ -19,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
