@@ -1,1 +1,1 @@
-Retrigger the corrected mobile-document and PDF verification workflow against canonical main after fixing the repository-local Playwright runner.
+Run the final corrected mobile-document, candidate-positioning, PDF, and page-use verification against canonical main after removing stale release documentation.
