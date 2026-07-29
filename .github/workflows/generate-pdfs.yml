@@ -2,6 +2,8 @@ name: Generate candidate PDFs and verify mobile documents
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
     paths:
@@ -40,6 +42,20 @@ jobs:
           test "$(pdfinfo docs/Russell-Dudek-Baker-Tilly-Value-Conversion-Review.pdf | awk '/^Pages:/{print $2}')" = "2"
           test -z "$(find . -maxdepth 2 -type f -iname '*interview*' -print -quit)"
           for pdf in docs/*.pdf; do pdftotext "$pdf" - | grep -q 'BakerTillyUS'; done
+          test "$(pdftotext docs/Russell-Dudek-Baker-Tilly-Cover-Letter.pdf - | grep -o 'https://russelldudek.github.io/BakerTillyUS/' | wc -l)" -ge 2
+      - name: Verify cover letter body link
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          html = Path('cover-letter.html').read_text(encoding='utf-8')
+          body = re.search(r'<div class="letter-body">(.*?)</div><footer', html, re.S)
+          if not body:
+              raise SystemExit('Cover letter body was not found.')
+          url = 'https://russelldudek.github.io/BakerTillyUS/'
+          if body.group(1).count(url) < 2:
+              raise SystemExit('The complete candidate-vision URL is not visibly linked in the cover-letter body.')
+          PY
       - name: Verify mobile document geometry
         shell: bash
         run: |
@@ -114,7 +130,8 @@ jobs:
           - replaced defensive target-company experience language with confident transferability;
           - replaced the awkward entry-plan phrasing with direct operational language;
           - rebuilt the 120-day plan as two deliberately filled pages;
-          - removed the retired public brief and every link to it.
+          - removed the retired public brief and every link to it;
+          - printed the complete candidate-vision URL in the cover-letter body and verified it in the one-page PDF.
 
           PDF contracts: resume 2 pages, cover letter 1 page, 120-day plan 2 pages, Value Conversion Review 2 pages.
           EOF
@@ -128,6 +145,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Generated artifacts already current"
           else
-            git commit -m "Verify corrected mobile documents and regenerate PDFs"
+            git commit -m "Verify cover letter candidate vision link and regenerate PDFs"
             git push origin main
           fi
