@@ -1,0 +1,24 @@
+# Artifact Manifest
+
+- [x] `index.html` - candidate vision and interactive Value Conversion Equation
+- [x] `resume.html`
+- [x] `cover-letter.html`
+- [x] `interview-brief.html`
+- [x] `120-day-plan.html`
+- [x] `value-conversion-review.html`
+- [x] `styles.css`
+- [x] `brand-tokens.css`
+- [x] `app.js`
+- [x] `brand-intelligence.md`
+- [x] `assets/brand/baker-tilly-logo.svg`
+- [x] `docs/Russell-Dudek-Baker-Tilly-Resume.pdf` - exactly 2 pages
+- [x] `docs/Russell-Dudek-Baker-Tilly-Cover-Letter.pdf` - exactly 1 page
+- [x] `docs/Russell-Dudek-Baker-Tilly-Interview-Thesis-Brief.pdf` - 3 pages
+- [x] `docs/Russell-Dudek-Baker-Tilly-120-Day-Plan.pdf` - 3 pages
+- [x] `docs/Russell-Dudek-Baker-Tilly-Value-Conversion-Review.pdf` - 2 pages
+- [x] `scripts/generate-pdfs.mjs`
+- [x] `.github/workflows/generate-pdfs.yml`
+- [x] `.nojekyll`
+- [x] `DEPLOY.md`
+- [x] `campaign-audit.md`
+- [x] `README.md`

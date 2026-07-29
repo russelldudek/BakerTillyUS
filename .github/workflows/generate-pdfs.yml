@@ -1,0 +1,51 @@
+name: Generate candidate PDFs
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - '*.css'
+      - 'assets/brand/**'
+      - 'scripts/generate-pdfs.mjs'
+      - '.github/workflows/generate-pdfs.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install PDF tooling
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+      - name: Generate PDFs
+        run: node scripts/generate-pdfs.mjs
+      - name: Verify page contracts and campaign URL
+        run: |
+          test "$(pdfinfo docs/Russell-Dudek-Baker-Tilly-Resume.pdf | awk '/^Pages:/{print $2}')" = "2"
+          test "$(pdfinfo docs/Russell-Dudek-Baker-Tilly-Cover-Letter.pdf | awk '/^Pages:/{print $2}')" = "1"
+          test "$(pdfinfo docs/Russell-Dudek-Baker-Tilly-Interview-Thesis-Brief.pdf | awk '/^Pages:/{print $2}')" = "3"
+          test "$(pdfinfo docs/Russell-Dudek-Baker-Tilly-120-Day-Plan.pdf | awk '/^Pages:/{print $2}')" = "3"
+          test "$(pdfinfo docs/Russell-Dudek-Baker-Tilly-Value-Conversion-Review.pdf | awk '/^Pages:/{print $2}')" = "2"
+          for pdf in docs/*.pdf; do pdftotext "$pdf" - | grep -q 'BakerTillyUS'; done
+      - name: Commit generated PDFs to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/*.pdf
+          if git diff --cached --quiet; then
+            echo "PDFs already current"
+          else
+            git commit -m "Generate final candidate PDFs"
+            git push origin main
+          fi
