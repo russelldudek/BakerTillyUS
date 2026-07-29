@@ -82,10 +82,25 @@ jobs:
           rm -f mobile-qa.mjs
       - name: Verify candidate-positioning regression rules
         run: |
-          if grep -RniE 'prior Baker Tilly experience|not a claim|Interview thesis|Interview Brief|Listen at the work' --include='*.html' --include='*.md' .; then
-            echo 'Rejected candidate-facing language remains.'
-            exit 1
-          fi
+          python3 - <<'PY'
+          from pathlib import Path
+          banned = [
+              "prior Baker Tilly experience",
+              "not a claim",
+              "Interview " + "thesis",
+              "Interview " + "Brief",
+              "Listen at " + "the work",
+          ]
+          offenders = []
+          for pattern in ("*.html", "*.md"):
+              for path in Path(".").rglob(pattern):
+                  text = path.read_text(encoding="utf-8", errors="ignore").lower()
+                  for phrase in banned:
+                      if phrase.lower() in text:
+                          offenders.append(f"{path}: {phrase}")
+          if offenders:
+              raise SystemExit("Rejected candidate-facing language remains:\n" + "\n".join(offenders))
+          PY
       - name: Write correction receipt
         run: |
           cat > qa/mobile-correction/README.md <<'EOF'
@@ -97,7 +112,7 @@ jobs:
           - fixed narrow-screen overflow and fixed-sheet clipping;
           - reflowed columns, tables, forms, navigation, headers, and long contact strings;
           - replaced defensive target-company experience language with confident transferability;
-          - replaced the awkward phrase identified in the entry plan;
+          - replaced the awkward entry-plan phrasing with direct operational language;
           - rebuilt the 120-day plan as two deliberately filled pages;
           - removed the retired public brief and every link to it.
 
