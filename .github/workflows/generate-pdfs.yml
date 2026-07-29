@@ -38,8 +38,7 @@ jobs:
           test "$(pdfinfo docs/Russell-Dudek-Baker-Tilly-Cover-Letter.pdf | awk '/^Pages:/{print $2}')" = "1"
           test "$(pdfinfo docs/Russell-Dudek-Baker-Tilly-120-Day-Plan.pdf | awk '/^Pages:/{print $2}')" = "2"
           test "$(pdfinfo docs/Russell-Dudek-Baker-Tilly-Value-Conversion-Review.pdf | awk '/^Pages:/{print $2}')" = "2"
-          test ! -e interview-brief.html
-          test ! -e docs/Russell-Dudek-Baker-Tilly-Interview-Thesis-Brief.pdf
+          test -z "$(find . -maxdepth 2 -type f -iname '*interview*' -print -quit)"
           for pdf in docs/*.pdf; do pdftotext "$pdf" - | grep -q 'BakerTillyUS'; done
       - name: Verify mobile document geometry
         shell: bash
@@ -98,9 +97,9 @@ jobs:
           - fixed narrow-screen overflow and fixed-sheet clipping;
           - reflowed columns, tables, forms, navigation, headers, and long contact strings;
           - replaced defensive target-company experience language with confident transferability;
-          - replaced the awkward “Listen at the work” phrase;
+          - replaced the awkward phrase identified in the entry plan;
           - rebuilt the 120-day plan as two deliberately filled pages;
-          - removed the public Interview Thesis artifact and every link to it.
+          - removed the retired public brief and every link to it.
 
           PDF contracts: resume 2 pages, cover letter 1 page, 120-day plan 2 pages, Value Conversion Review 2 pages.
           EOF
