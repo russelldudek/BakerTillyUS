@@ -1,1 +1,1 @@
-Canonical main passed the corrected document verification. Do not merge this trigger branch.
+Canonical main passed the corrected document verification. The branch is an unmerged audit trigger only.
