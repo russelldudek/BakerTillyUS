@@ -12,9 +12,11 @@ https://russelldudek.github.io/BakerTillyUS/
 - `index.html` - candidate vision and interactive Value Conversion Equation
 - `resume.html` - exactly two-page resume with native PDF download
 - `cover-letter.html` - exactly one-page cover letter with native PDF download
-- `interview-brief.html` - three-page interview thesis brief
-- `120-day-plan.html` - three-page entry plan
+- `120-day-plan.html` - two-page entry plan
 - `value-conversion-review.html` - two-page role-specific decision artifact
+
+## Responsive document behavior
+The web document views reflow independently from their fixed print layouts. Narrow-screen QA covers 390-pixel and 320-pixel viewports for the resume, cover letter, entry plan, and Value Conversion Review.
 
 ## Publication
 The complete campaign source, official identity asset, downloadable PDFs, and QA record are committed to the public `main` branch. GitHub Pages should publish from `main` and `/ (root)`.
