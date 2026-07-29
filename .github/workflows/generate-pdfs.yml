@@ -2,8 +2,6 @@ name: Generate candidate PDFs and verify mobile documents
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [main]
   push:
     branches: [main]
     paths:
