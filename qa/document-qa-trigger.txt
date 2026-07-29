@@ -1,1 +1,1 @@
-Run the final corrected mobile-document, candidate-positioning, PDF, and page-use verification against canonical main after removing stale release documentation.
+The canonical main branch passed the corrected mobile-document, candidate-positioning, PDF, and page-use verification. This branch is no longer needed and must not be merged.
