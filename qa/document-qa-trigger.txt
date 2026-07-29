@@ -1,1 +1,1 @@
-The canonical main branch passed the corrected mobile-document, candidate-positioning, PDF, and page-use verification. This branch is no longer needed and must not be merged.
+Canonical main passed the corrected document verification. This same-repository trigger branch is retained only as an audit trail and must not be merged.
